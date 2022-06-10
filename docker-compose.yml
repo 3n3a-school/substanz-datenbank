@@ -1,20 +1,19 @@
 version: '3'
 
 services:    
-  # api:
-  #   image: "python"
-  #   depends_on:
-  #     - postgres
-  #   environment:
-  #     - NODE_ENV:${NODE_ENV}
-  #   env_file:
-  #     - .env
-  #   ports:
-  #     - ${BACKEND_PORT}:8000
-  #   networks:
-  #     - backend
-  #   restart: unless-stopped
-
+  app:
+    build:
+      context: ./application
+    depends_on:
+      - postgres
+    ports:
+      - 80:5000
+    networks:
+      - backend
+    restart: unless-stopped
+    environment:
+      - DATABASE_URL=postgres://postgres:postgres@postgres:5432/substances?sslmode=disable
+  
   postgres:
     image: postgres:alpine
     networks:
