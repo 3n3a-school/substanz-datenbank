@@ -1,0 +1,48 @@
+version: '3'
+
+services:    
+  # api:
+  #   image: "python"
+  #   depends_on:
+  #     - postgres
+  #   environment:
+  #     - NODE_ENV:${NODE_ENV}
+  #   env_file:
+  #     - .env
+  #   ports:
+  #     - ${BACKEND_PORT}:8000
+  #   networks:
+  #     - backend
+  #   restart: unless-stopped
+
+  postgres:
+    image: postgres:alpine
+    networks:
+      - backend
+    environment:
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_DB: "${POSTGRES_DB_PREFIX}_${POSTGRES_DB_NAME}"
+      PG_DATA: /var/lib/postgresql/data
+    ports:
+      - ${POSTGRES_DB_PORT}:${POSTGRES_DB_PORT}
+    volumes:
+      - postgres:/var/lib/postgresql/data
+
+  pgweb:
+    restart: always
+    image: sosedoff/pgweb
+    ports: 
+      - "8081:8081" 
+    networks:
+      - backend
+    environment:
+      - DATABASE_URL=postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:${POSTGRES_DB_PORT}/${POSTGRES_DB_PREFIX}_${POSTGRES_DB_NAME}?sslmode=disable
+    depends_on:
+      - postgres
+
+networks:
+  backend:
+
+volumes:
+  postgres:
