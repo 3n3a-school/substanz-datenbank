@@ -16,11 +16,18 @@ class Substance:
             ]
         )
 
-    def read():
-        pass
+    def read(self, id):
+        return self.db.get_record("substances", "*", str(id))[0]
 
-    def update():
-        pass
+    def readAll(self):
+        return self.db.get_record("substances")
 
-    def delete():
-        pass
+    def update(self, values, id):
+        return self.db.update_record("substances", {
+            "name": values['name'],
+            "molecular_formula": values['molecular_formula'],
+            "molecular_weight": values['molecular_weight'],
+        }, id)
+
+    def delete(self, id):
+        return self.db.delete_record("substances", id)

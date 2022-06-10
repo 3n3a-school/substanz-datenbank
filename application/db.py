@@ -2,13 +2,14 @@ from distutils.log import error
 from pathlib import Path
 from typing import Dict
 import psycopg2
+import psycopg2.extras
 from psycopg2.sql import SQL, Identifier, Literal, Composable
 import os
 
 class DB:
     def __init__(self, conn_string=os.environ.get("DATABASE_URL"), create_script=os.path.dirname(__file__) + '/db/init.sql'):
         self.conn = psycopg2.connect(
-            conn_string,
+            conn_string
         )
         self.table_script = create_script
         self.connect()
@@ -23,7 +24,7 @@ class DB:
             return e
 
     def connect(self):
-        cursor = self.conn.cursor()
+        cursor = self.conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
         self.cursor = cursor
 
     def create_table(self):
@@ -86,15 +87,16 @@ class DB:
         except psycopg2.Error as e:
             return e
 
-    def get_record(self, table, values="*"):
+    def get_record(self, table, values="*", where=None):
         try:
             is_all = (values == "*" and len(values) <= 1)
+            where = f" WHERE id = {where}" if where != None else ""
 
             if is_all:
-                sql = SQL("SELECT * FROM {}").format(Identifier(table))
+                sql = SQL(f"SELECT * FROM {{}}{where}").format(Identifier(table))
             else:
                 values = ", ".join(values)
-                sql = SQL("SELECT {} FROM {}").format(Identifier(values), Identifier(table))
+                sql = SQL(f"SELECT {{}} FROM {{}}{where}").format(Identifier(values), Identifier(table))
 
             self.cursor.execute(sql)
 

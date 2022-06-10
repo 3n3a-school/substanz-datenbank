@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>List of Substances</title>
+    <link rel="stylesheet" href="https://unpkg.com/purecss@2.1.0/build/pure-min.css" integrity="sha384-yHIFVG6ClnONEA5yB5DJXfW2/KC173DIQrYoZMEtBvGzmf0PKiGyNEqe9N6BNDBH" crossorigin="anonymous">
+</head>
+<body>
+    <h2>List of Substances</h2>
+    <table class="pure-table">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Name</th>
+                <th>Molecular Formula</th>
+                <th>Molecular Weight</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for substance in substances %}
+            <tr>
+                <td>{{ substance.id }}</td>
+                <td>{{ substance.name }}</td>
+                <td>{{ substance.molecular_formula }}</td>
+                <td>{{ substance.molecular_weight }}</td>
+                <td><a href="/substances/del/{{ substance.id }}">Delete</a></td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>
