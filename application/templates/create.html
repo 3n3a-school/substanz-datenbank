@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Substance</title>
+    <link rel="stylesheet" href="https://unpkg.com/purecss@2.1.0/build/pure-min.css" integrity="sha384-yHIFVG6ClnONEA5yB5DJXfW2/KC173DIQrYoZMEtBvGzmf0PKiGyNEqe9N6BNDBH" crossorigin="anonymous">
+</head>
+<body>
+    <h2>New Substance</h2>
+    <form 
+    class="pure-form pure-form-stacked" 
+    action="/api/substances" method="post"
+    enctype="multipart/form-data">
+        <label for="name">
+            <span>Name</span>
+            <input type="text" name="name" id="name">
+        </label>
+        <label for="molecular_formula">
+            <span>Molecular Formula</span>
+            <input type="text" name="molecular_formula" id="molecular_formula">
+        </label>
+        <label for="molecular_weight">
+            <span>Molecular Weight</span>
+            <input type="text" name="molecular_weight" id="molecular_weight">
+        </label>
+        <label for="risks">
+            <span>Risks</span>
+            <input type="text" name="risks" id="risks">
+        </label>
+        <label for="images">
+            <span>Images</span>
+            <input type="file" accept="image/*" multiple="true" name="images" id="images">
+        </label>
+        <button type="submit">
+            Add
+        </button>
+    </form>
+</body>
+</html>

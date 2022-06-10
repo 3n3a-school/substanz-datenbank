@@ -7,22 +7,18 @@ services:
     depends_on:
       - postgres
     ports:
-      - 80:5000
-    networks:
-      - backend
+      - 8000:5000
     restart: unless-stopped
     environment:
       - DATABASE_URL=postgres://postgres:postgres@postgres:5432/substances?sslmode=disable
   
   postgres:
     image: postgres:alpine
-    networks:
-      - backend
     environment:
-      POSTGRES_PASSWORD:postgres
-      POSTGRES_USER:postgres
-      POSTGRES_DB:substances
-      PG_DATA: /var/lib/postgresql/data
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_USER=postgres
+      - POSTGRES_DB=substances
+      - PG_DATA=/var/lib/postgresql/data
     ports:
       - 5432:5432
     volumes:
@@ -33,15 +29,10 @@ services:
     image: sosedoff/pgweb
     ports: 
       - "8081:8081" 
-    networks:
-      - backend
     environment:
       - DATABASE_URL=postgres://postgres:postgres@postgres:5432/substances?sslmode=disable
     depends_on:
       - postgres
-
-networks:
-  backend:
 
 volumes:
   postgres:
