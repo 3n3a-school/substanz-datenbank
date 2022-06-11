@@ -13,15 +13,18 @@ def index():
 @app.route("/substances/")
 def allSubstances():
     args = request.args
+    query = ""
     if 'q' in args:
+        query  = request.args.get('q')
         substances = substanceController.readByTitle(
-            request.args.get('q')
+            query
         )
     else:
         substances = substanceController.readAll()
     return render_template(
         'index.html', 
-        substances=substances
+        substances=substances,
+        query=query,
     )
 
 @app.route("/substances/new")
