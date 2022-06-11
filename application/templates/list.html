@@ -8,7 +8,19 @@
     <link rel="stylesheet" href="https://unpkg.com/purecss@2.1.0/build/pure-min.css" integrity="sha384-yHIFVG6ClnONEA5yB5DJXfW2/KC173DIQrYoZMEtBvGzmf0PKiGyNEqe9N6BNDBH" crossorigin="anonymous">
 </head>
 <body>
+    <a href="../">◀️ Back</a>
     <h2>List of Substances</h2>
+    <div class="pure-form">
+        <form action="./" method="get">
+            <label for="q">
+                <span>Search for Name</span>
+                <input type="text" required name="q" id="q">
+            </label>
+            <button type="submit">
+                Search
+            </button>
+        </form>
+    </div>
     <table class="pure-table">
         <thead>
             <tr>
@@ -16,6 +28,7 @@
                 <th>Name</th>
                 <th>Molecular Formula</th>
                 <th>Molecular Weight</th>
+                <th></th>
                 <th></th>
             </tr>
         </thead>
@@ -26,6 +39,7 @@
                 <td>{{ substance.name }}</td>
                 <td>{{ substance.molecular_formula }}</td>
                 <td>{{ substance.molecular_weight }}</td>
+                <td><a href="/substances/edit/{{ substance.id }}">Edit</a></td>
                 <td><a href="/substances/del/{{ substance.id }}">Delete</a></td>
             </tr>
             {% endfor %}

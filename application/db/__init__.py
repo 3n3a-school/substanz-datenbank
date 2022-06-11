@@ -7,7 +7,7 @@ from psycopg2.sql import SQL, Identifier, Literal, Composable
 import os
 
 class DB:
-    def __init__(self, conn_string=os.environ.get("DATABASE_URL"), create_script=os.path.dirname(__file__) + '/db/init.sql'):
+    def __init__(self, conn_string=os.environ.get("DATABASE_URL"), create_script=os.path.dirname(__file__) + '/init.sql'):
         self.conn = psycopg2.connect(
             conn_string
         )
@@ -21,6 +21,7 @@ class DB:
             results = self.cursor.fetchall()
             return results
         except psycopg2.Error as e:
+            self.conn.rollback()
             return e
 
     def connect(self):
@@ -55,7 +56,9 @@ class DB:
             self.conn.commit()
             return True
         except psycopg2.Error as e:
+            self.conn.rollback()
             print(f"Error in insert record {e}")
+            return e
 
     def update_record(self, table, values: Dict, id):
         try:
@@ -65,7 +68,7 @@ class DB:
 
             values = ", ".join(key_value)
 
-            sql = SQL("UPDATE {} SET {} WHERE id = %s").format(
+            sql = SQL(f"UPDATE {{}} SET {values} WHERE id = %s").format(
                 Identifier(table),
                 Literal(values)
             )
@@ -74,6 +77,7 @@ class DB:
             self.conn.commit()
             return True
         except psycopg2.Error as e:
+            self.conn.rollback()
             return e
 
     def delete_record(self, table, id):
@@ -85,15 +89,16 @@ class DB:
             self.conn.commit()
             return True
         except psycopg2.Error as e:
+            self.conn.rollback()
             return e
 
     def get_record(self, table, values="*", where=None):
         try:
             is_all = (values == "*" and len(values) <= 1)
-            where = f" WHERE id = {where}" if where != None else ""
+            where_string = f" WHERE {where['key']} {where['operator']} {where['value']}" if where != None else ""
 
             if is_all:
-                sql = SQL(f"SELECT * FROM {{}}{where}").format(Identifier(table))
+                sql = SQL(f"SELECT * FROM {{}}{where_string}").format(Identifier(table))
             else:
                 values = ", ".join(values)
                 sql = SQL(f"SELECT {{}} FROM {{}}{where}").format(Identifier(values), Identifier(table))
@@ -105,4 +110,5 @@ class DB:
             else:
                 return self.cursor.fetchone()
         except psycopg2.Error as e:
+            self.conn.rollback()
             return e

@@ -17,7 +17,10 @@ class Substance:
         )
 
     def read(self, id):
-        return self.db.get_record("substances", "*", str(id))[0]
+        return self.db.get_record("substances", "*", {"key":"id", "operator": "=", "value": str(id)})[0]
+
+    def readByTitle(self, title):
+        return self.db.get_record("substances", "*", {"key":"name", "operator": "LIKE", "value": f"'%{title}%'"})
 
     def readAll(self):
         return self.db.get_record("substances")

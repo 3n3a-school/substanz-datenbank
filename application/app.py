@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, jsonify
+from flask import Flask, render_template, request, jsonify, redirect, url_for
 from controllers.substance import Substance
 
 app = Flask(__name__)
@@ -10,10 +10,18 @@ def index():
     return render_template('index.html')
 
 @app.route("/substances")
+@app.route("/substances/")
 def allSubstances():
+    args = request.args
+    if 'q' in args:
+        substances = substanceController.readByTitle(
+            request.args.get('q')
+        )
+    else:
+        substances = substanceController.readAll()
     return render_template(
         'list.html', 
-        substances=substanceController.readAll()
+        substances=substances
     )
 
 @app.route("/substances/new")
@@ -27,7 +35,7 @@ def editSubstance(id):
 @app.route("/substances/del/<id>")
 def delSubstance(id):
     substanceController.delete(id)
-    return f"deleted {id}"
+    return redirect(url_for('allSubstances'))
 
 @app.route("/api/substances", methods=["GET", "POST"])
 def createSubstance():
@@ -35,13 +43,17 @@ def createSubstance():
         return jsonify(substanceController.readAll())
     elif request.method == "POST":
         substanceController.create(request.form)
-        return "success"
+        return redirect(url_for('allSubstances'))
 
 @app.route("/api/substances/<id>", methods=["POST"])
 def updateSubstance(id):
     if request.method == "POST":
-        substanceController.update(request.form, id)
-        return "success"
-
+        updateRes = substanceController.update(request.form, id)
+        if updateRes is not True:
+            print(f"Error in Update: {updateRes}")
+            return {"error": "Update caused error"}
+        else:
+           return redirect(url_for('allSubstances'))
+        
 if __name__ == "__main__":
     app.run(debug=True)
