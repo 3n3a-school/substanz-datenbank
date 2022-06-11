@@ -25,8 +25,10 @@ class Substance:
 
     def findAll(self):
         result = self.db.execute("""
-       SELECT * FROM images
-       JOIN substances On images.substance_id = substances.id
+       SELECT array(
+         SELECT id FROM images i
+         WHERE i.substance_id = s.id
+       ) as images, * FROM substances s
         """, None, True)
         if isinstance(result, Exception):
             print(f"Findall Substance: {result}")
