@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, jsonify, redirect, url_for
+from flask import Flask, render_template, request, jsonify, redirect, url_for, send_file
 from controllers.substance import Substance
 from controllers.images import Image
 
@@ -60,6 +60,11 @@ def updateSubstance(id):
             return {"error": "Update caused error"}
         else:
            return redirect(url_for('allSubstances'))
-        
+
+@app.route("/api/images/<id>")
+def getImage(id):
+    file = imageController.find(id)
+    return send_file(io.BytesIO(file.get("content")), mimetype=file.get("mimetype"))
+
 if __name__ == "__main__":
     app.run(debug=True)

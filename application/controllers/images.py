@@ -23,3 +23,6 @@ class Image:
                     ids.append(image_id)
         print(f"images: {ids}")
         return ids
+
+    def find(self, id):
+        return self.db.get_record("images", "*", {"key":"id", "operator":"=", "value": id})
