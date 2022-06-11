@@ -13,17 +13,27 @@ class Substance:
                 values['name'],
                 values['molecular_formula'],
                 values['molecular_weight'],
-            ]
-        )
+            ],
+            " RETURNING id"
+        ).get("id")
 
-    def read(self, id):
+    def find(self, id):
         return self.db.get_record("substances", "*", {"key":"id", "operator": "=", "value": str(id)})[0]
 
-    def readByTitle(self, title):
+    def findByTitle(self, title):
         return self.db.get_record("substances", "*", {"key":"name", "operator": "LIKE", "value": f"'%{title}%'"})
 
-    def readAll(self):
-        return self.db.get_record("substances")
+    def findAll(self):
+        result = self.db.execute("""
+       SELECT * FROM images
+       JOIN substances On images.substance_id = substances.id
+        """, None, True)
+        if isinstance(result, Exception):
+            print(f"Findall Substance: {result}")
+            return []
+        else:
+            print(result)
+            return result
 
     def update(self, values, id):
         return self.db.update_record("substances", {

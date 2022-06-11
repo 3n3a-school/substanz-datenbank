@@ -1,9 +1,11 @@
 from flask import Flask, render_template, request, jsonify, redirect, url_for
 from controllers.substance import Substance
+from controllers.images import Image
 
 app = Flask(__name__)
 
 substanceController = Substance()
+imageController = Image()
 
 @app.route("/")
 def index():
@@ -16,11 +18,11 @@ def allSubstances():
     query = ""
     if 'q' in args:
         query  = request.args.get('q')
-        substances = substanceController.readByTitle(
+        substances = substanceController.findByTitle(
             query
         )
     else:
-        substances = substanceController.readAll()
+        substances = substanceController.findAll()
     return render_template(
         'index.html', 
         substances=substances,
@@ -33,7 +35,7 @@ def newSubstance():
 
 @app.route("/substances/edit/<id>")
 def editSubstance(id):
-    return render_template('edit.html', substance=substanceController.read(id))
+    return render_template('edit.html', substance=substanceController.find(id))
 
 @app.route("/substances/del/<id>")
 def delSubstance(id):
@@ -43,9 +45,10 @@ def delSubstance(id):
 @app.route("/api/substances", methods=["GET", "POST"])
 def createSubstance():
     if request.method == "GET":
-        return jsonify(substanceController.readAll())
+        return jsonify(substanceController.findAll())
     elif request.method == "POST":
-        substanceController.create(request.form)
+        substance_id = substanceController.create(request.form)
+        imageController.create(request.files, substance_id)
         return redirect(url_for('allSubstances'))
 
 @app.route("/api/substances/<id>", methods=["POST"])

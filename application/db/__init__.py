@@ -14,13 +14,14 @@ class DB:
         self.table_script = create_script
         self.connect()
 
-    def execute(self, sql):
+    def execute(self, sql, values=None, return_string=False):
         try:
-            self.cursor.execute(sql)
+            self.cursor.execute(sql, values)
             self.conn.commit()
-            results = self.cursor.fetchall()
-            return results
-        except psycopg2.Error as e:
+            if return_string:
+                return self.cursor.fetchall()
+            return True
+        except Exception as e:
             self.conn.rollback()
             return e
 
@@ -35,27 +36,30 @@ class DB:
                 sql = f.read()
             self.cursor.execute(sql)
             self.conn.commit()
-        except psycopg2.Error as e:
-            error(e)
+        except Exception as e:
+            self.conn.rollback()
+            error(f"Error while creating tables {e}")
 
-    def insert_record(self, table, columns, values):
+    def insert_record(self, table, columns, values, return_string=""):
         try:
             columns = ", ".join(columns)
 
             values_string = []
             for value in values:
-                if "(" in value:
+                if "(" in str(value):
                     values_string.append(value)
                 else:
                     values_string.append(f"'{value}'")
             values = ", ".join(values_string)
 
-            sql = SQL(f"INSERT INTO {{}} ({columns}) VALUES ({values})").format(Identifier(table))
+            sql = SQL(f"INSERT INTO {{}} ({columns}) VALUES ({values}){return_string}").format(Identifier(table))
             print(self.cursor.mogrify(sql))
             self.cursor.execute(sql)
             self.conn.commit()
+            if return_string != "":
+                return self.cursor.fetchone()
             return True
-        except psycopg2.Error as e:
+        except Exception as e:
             self.conn.rollback()
             print(f"Error in insert record {e}")
             return e
@@ -76,7 +80,7 @@ class DB:
             self.cursor.execute(sql, [id])
             self.conn.commit()
             return True
-        except psycopg2.Error as e:
+        except Exception as e:
             self.conn.rollback()
             return e
 
@@ -88,7 +92,7 @@ class DB:
             self.cursor.execute(sql, [id])
             self.conn.commit()
             return True
-        except psycopg2.Error as e:
+        except Exception as e:
             self.conn.rollback()
             return e
 
@@ -104,11 +108,11 @@ class DB:
                 sql = SQL(f"SELECT {{}} FROM {{}}{where}").format(Identifier(values), Identifier(table))
 
             self.cursor.execute(sql)
-
+            self.conn.commit()
             if is_all:
                 return self.cursor.fetchall()
             else:
                 return self.cursor.fetchone()
-        except psycopg2.Error as e:
+        except Exception as e:
             self.conn.rollback()
             return e
