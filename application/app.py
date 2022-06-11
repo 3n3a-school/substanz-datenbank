@@ -7,7 +7,7 @@ substanceController = Substance()
 
 @app.route("/")
 def index():
-    return render_template('index.html')
+    return redirect(url_for('allSubstances'))
 
 @app.route("/substances")
 @app.route("/substances/")
@@ -20,7 +20,7 @@ def allSubstances():
     else:
         substances = substanceController.readAll()
     return render_template(
-        'list.html', 
+        'index.html', 
         substances=substances
     )
 

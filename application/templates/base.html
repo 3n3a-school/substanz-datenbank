@@ -6,10 +6,67 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>List of Substances</title>
     <link rel="stylesheet" href="https://unpkg.com/purecss@2.1.0/build/pure-min.css" integrity="sha384-yHIFVG6ClnONEA5yB5DJXfW2/KC173DIQrYoZMEtBvGzmf0PKiGyNEqe9N6BNDBH" crossorigin="anonymous">
+    <script src="https://kit.fontawesome.com/670fdb11ca.js" crossorigin="anonymous"></script>
+    <style>
+        .pure-c {
+            display: block;
+            max-width: 789px;
+            margin: 1em auto;
+        }
+        .pure-g-row {
+            flex-flow: column wrap !important;
+        }
+        .pure-gap {
+            gap: 1em;
+        }
+        .pure-u.pure-gap {
+            display: flex !important;
+            flex-direction: column;
+        }
+        .pure-flex-right {
+            display: flex;
+            flex-direction: row;
+            justify-content: end;
+        }
+        .button-success,
+        .button-error,
+        .button-warning,
+        .button-secondary {
+            color: white;
+            border-radius: 4px;
+            text-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
+        }
+
+        .button-success {
+            background: rgb(28, 184, 65);
+            /* this is a green */
+        }
+
+        .button-error {
+            background: rgb(202, 60, 60);
+            /* this is a maroon */
+        }
+
+        .button-warning {
+            background: rgb(223, 117, 20);
+            /* this is an orange */
+        }
+
+        .button-secondary {
+            background: rgb(66, 184, 221);
+            /* this is a light blue */
+        }
+    </style>
 </head>
 <body>
-    <a href="../">◀️ Back</a>
-    {% block content %}
-    {% endblock %}
+    <div class="pure-c">
+        {% if request.endpoint != "allSubstances" %}
+        <a onclick="history.back();" class="pure-button">◀️ Back</a>
+        {% endif %}
+        <div class="pure-g pure-g-row pure-gap">
+            {% block content %}
+            {% endblock %}
+        </div>
+    </div>
 </body>
 </html>

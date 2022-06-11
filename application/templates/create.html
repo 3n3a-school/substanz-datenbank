@@ -1,33 +1,37 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <h2>New Substance</h2>
-    <form 
-    class="pure-form pure-form-stacked" 
-    action="/api/substances" method="post"
-    enctype="multipart/form-data">
-        <label for="name">
-            <span>Name</span>
-            <input type="text" name="name" id="name">
-        </label>
-        <label for="molecular_formula">
-            <span>Molecular Formula</span>
-            <input type="text" name="molecular_formula" id="molecular_formula">
-        </label>
-        <label for="molecular_weight">
-            <span>Molecular Weight</span>
-            <input type="text" name="molecular_weight" id="molecular_weight">
-        </label>
-        <label for="risks">
-            <span>Risks</span>
-            <input type="text" name="risks" id="risks">
-        </label>
-        <label for="images">
-            <span>Images</span>
-            <input type="file" accept="image/*" multiple="true" name="images" id="images">
-        </label>
-        <button type="submit">
-            Add
-        </button>
-    </form>
+    <div class="pure-u">
+        <h2>New Substance</h2>
+    </div>
+    <div class="pure-u">
+        <form 
+        class="pure-form pure-form-stacked" 
+        action="/api/substances" method="post"
+        enctype="multipart/form-data">
+            <label for="name">
+                <span>Name</span>
+                <input type="text" name="name" id="name">
+            </label>
+            <label for="molecular_formula">
+                <span>Molecular Formula</span>
+                <input type="text" name="molecular_formula" id="molecular_formula">
+            </label>
+            <label for="molecular_weight">
+                <span>Molecular Weight</span>
+                <input type="text" name="molecular_weight" id="molecular_weight">
+            </label>
+            <label for="risks">
+                <span>Risks</span>
+                <input type="text" name="risks" id="risks">
+            </label>
+            <label for="images">
+                <span>Images</span>
+                <input type="file" accept="image/*" multiple="true" name="images" id="images">
+            </label>
+            <button class="button-success pure-button" type="submit">
+                Add
+            </button>
+        </form>
+    </div>
 {% endblock %}
