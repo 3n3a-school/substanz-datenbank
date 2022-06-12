@@ -73,7 +73,6 @@ def getImage(id):
             )
         ,
         mimetype=file["mimetype"],
-        direct_passthrough=True
     )
 
 if __name__ == "__main__":
