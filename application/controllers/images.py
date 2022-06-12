@@ -25,4 +25,4 @@ class Image:
         return ids
 
     def find(self, id):
-        return self.db.get_record("images", "*", {"key":"id", "operator":"=", "value": id})
+        return self.db.get_record("images", "*", {"key":"id", "operator":"=", "value": id})[0]

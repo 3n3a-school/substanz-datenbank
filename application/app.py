@@ -1,4 +1,6 @@
+import io
 from flask import Flask, render_template, request, jsonify, redirect, url_for, send_file
+from werkzeug.wsgi import wrap_file
 from controllers.substance import Substance
 from controllers.images import Image
 
@@ -64,7 +66,15 @@ def updateSubstance(id):
 @app.route("/api/images/<id>")
 def getImage(id):
     file = imageController.find(id)
-    return send_file(io.BytesIO(file.get("content")), mimetype=file.get("mimetype"))
+    return send_file(
+        
+            io.BytesIO(
+                file["content"]
+            )
+        ,
+        mimetype=file["mimetype"],
+        direct_passthrough=True
+    )
 
 if __name__ == "__main__":
     app.run(debug=True)
