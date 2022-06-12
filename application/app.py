@@ -39,11 +39,6 @@ def newSubstance():
 def editSubstance(id):
     return render_template('edit.html', substance=substanceController.find(id))
 
-@app.route("/substances/del/<id>")
-def delSubstance(id):
-    substanceController.delete(id)
-    return redirect(url_for('allSubstances'))
-
 @app.route("/api/substances", methods=["GET", "POST"])
 def createSubstance():
     if request.method == "GET":
@@ -52,6 +47,11 @@ def createSubstance():
         substance_id = substanceController.create(request.form)
         imageController.create(request.files, substance_id)
         return redirect(url_for('allSubstances'))
+
+@app.route("/api/substances/del/<id>")
+def delSubstance(id):
+    print(substanceController.delete(id))
+    return redirect(url_for('allSubstances'))
 
 @app.route("/api/substances/<id>", methods=["POST"])
 def updateSubstance(id):

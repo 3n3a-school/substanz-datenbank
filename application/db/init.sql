@@ -9,5 +9,5 @@ CREATE TABLE IF NOT EXISTS images (
     id SERIAL PRIMARY KEY,
     content BYTEA,
     mimetype VARCHAR(255),
-    substance_id INT REFERENCES substances(id)
+    substance_id INT REFERENCES substances(id) ON DELETE CASCADE
 );
