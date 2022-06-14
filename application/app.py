@@ -66,8 +66,7 @@ def updateSubstance(id):
 @app.route("/api/images/<id>")
 def getImage(id):
     file = imageController.find(id)
-    return send_file(
-        
+    return send_file( 
             io.BytesIO(
                 file["content"]
             )

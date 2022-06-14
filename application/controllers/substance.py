@@ -21,7 +21,19 @@ class Substance:
         return self.db.get_record("substances", "*", {"key":"id", "operator": "=", "value": str(id)})[0]
 
     def findByTitle(self, title):
-        return self.db.get_record("substances", "*", {"key":"name", "operator": "LIKE", "value": f"'%{title}%'"})
+        result = self.db.execute("""
+        SELECT array(
+            SELECT id FROM images i
+            WHERE i.substance_id = s.id
+        ) as images, * FROM substances s
+        WHERE s.name LIKE %s
+            """, [ f"%{title}%" ], True)
+        if isinstance(result, Exception):
+            print(f"Error in FindByTitle Substance: {result}")
+            return []
+        else:
+            print(result)
+            return result
 
     def findAll(self):
         result = self.db.execute("""
@@ -31,7 +43,7 @@ class Substance:
        ) as images, * FROM substances s
         """, None, True)
         if isinstance(result, Exception):
-            print(f"Findall Substance: {result}")
+            print(f"Error in Findall Substance: {result}")
             return []
         else:
             print(result)
