@@ -37,7 +37,11 @@ class Substance:
         SELECT array(
             SELECT id FROM images i
             WHERE i.substance_id = s.id
-        ) as images, * FROM substances s
+        ) as images, array(
+         SELECT g.name FROM substance_groups sg
+         JOIN groups g ON g.id = sg.group_id
+         WHERE sg.substance_id = s.id
+       ) as groups, * FROM substances s
         WHERE s.name LIKE %s
             """, [ f"%{title}%" ], True)
         if isinstance(result, Exception):
@@ -53,8 +57,9 @@ class Substance:
          SELECT id FROM images i
          WHERE i.substance_id = s.id
        ) as images, array(
-         SELECT id FROM images i
-         WHERE i.substance_id = s.id
+         SELECT g.name FROM substance_groups sg
+         JOIN groups g ON g.id = sg.group_id
+         WHERE sg.substance_id = s.id
        ) as groups, * FROM substances s
         """, None, True)
         if isinstance(result, Exception):
