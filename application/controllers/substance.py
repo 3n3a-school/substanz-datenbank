@@ -52,7 +52,10 @@ class Substance:
        SELECT array(
          SELECT id FROM images i
          WHERE i.substance_id = s.id
-       ) as images, * FROM substances s
+       ) as images, array(
+         SELECT id FROM images i
+         WHERE i.substance_id = s.id
+       ) as groups, * FROM substances s
         """, None, True)
         if isinstance(result, Exception):
             print(f"Error in Findall Substance: {result}")
