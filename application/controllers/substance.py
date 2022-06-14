@@ -22,7 +22,14 @@ class Substance:
         SELECT array(
             SELECT id FROM images i
             WHERE i.substance_id = s.id
-        ) as images, * FROM substances s
+        ) as images, array(
+            SELECT name FROM synonyms syn
+            WHERE syn.substance_id = s.id
+        ) as synonyms, array(
+         SELECT g.name FROM substance_groups sg
+         JOIN groups g ON g.id = sg.group_id
+         WHERE sg.substance_id = s.id
+       ) as groups, * FROM substances s
         WHERE s.id = %s
             """, [ id ], True)
         if isinstance(result, Exception):
@@ -38,6 +45,9 @@ class Substance:
             SELECT id FROM images i
             WHERE i.substance_id = s.id
         ) as images, array(
+            SELECT name FROM synonyms syn
+            WHERE syn.substance_id = s.id
+        ) as synonyms, array(
          SELECT g.name FROM substance_groups sg
          JOIN groups g ON g.id = sg.group_id
          WHERE sg.substance_id = s.id
@@ -57,6 +67,9 @@ class Substance:
          SELECT id FROM images i
          WHERE i.substance_id = s.id
        ) as images, array(
+            SELECT name FROM synonyms syn
+            WHERE syn.substance_id = s.id
+        ) as synonyms, array(
          SELECT g.name FROM substance_groups sg
          JOIN groups g ON g.id = sg.group_id
          WHERE sg.substance_id = s.id
