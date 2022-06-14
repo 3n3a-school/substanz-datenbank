@@ -64,7 +64,7 @@ class DB:
             print(f"Error in insert record {e}")
             return e
 
-    def update_record(self, table, values: Dict, id):
+    def update_record(self, table, values: Dict, id, return_string=""):
         try:
             key_value = []
             for item in values.items():
@@ -72,13 +72,14 @@ class DB:
 
             values = ", ".join(key_value)
 
-            sql = SQL(f"UPDATE {{}} SET {values} WHERE id = %s").format(
-                Identifier(table),
-                Literal(values)
+            sql = SQL(f"UPDATE {{}} SET {values} WHERE id = %s{return_string}").format(
+                Identifier(table)
             )
             print(self.cursor.mogrify(sql))
             self.cursor.execute(sql, [id])
             self.conn.commit()
+            if return_string != "":
+                return self.cursor.fetchone()
             return True
         except Exception as e:
             self.conn.rollback()

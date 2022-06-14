@@ -57,6 +57,8 @@ def delSubstance(id):
 def updateSubstance(id):
     if request.method == "POST":
         updateRes = substanceController.update(request.form, id)
+        if 'images' in request.files.keys():
+            updateRes = imageController.update(request.files, id)
         if updateRes is not True:
             print(f"Error in Update: {updateRes}")
             return {"error": "Update caused error"}

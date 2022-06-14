@@ -19,10 +19,19 @@ class Image:
                     True
                 )[0].get('id')
                 print(f"image-status: {image_id}")
-                if isinstance(image_id, Exception):
+                if not isinstance(image_id, Exception):
                     ids.append(image_id)
         print(f"images: {ids}")
         return ids
 
     def find(self, id):
         return self.db.get_record("images", "*", {"key":"id", "operator":"=", "value": id})[0]
+
+    def update(self, files, id):
+        self.db.execute(
+            "DELETE FROM images WHERE substance_id = %s",
+            [
+                id
+            ]
+        )
+        return len(self.create(files, id)) > 0

@@ -27,6 +27,13 @@
             </label>
             <label for="images">
                 <span>Images</span>
+                <div class="pure-g">
+                    {% for image_id in substance.images %}
+                        <div class="pure-u">
+                            <img src="/api/images/{{ image_id }}" class="img-responsive" />
+                        </div>
+                    {% endfor %}
+                </div>
                 <input type="file" accept="image/*" multiple="true" name="images" id="images">
             </label>
             <button class="button-success pure-button" type="submit">

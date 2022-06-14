@@ -33,6 +33,7 @@
                     <th>Name</th>
                     <th>Molecular Formula</th>
                     <th>Molecular Weight</th>
+                    <th>Images</th>
                     <th></th>
                     <th></th>
                 </tr>
@@ -44,6 +45,13 @@
                     <td>{{ substance.name }}</td>
                     <td>{{ substance.molecular_formula }}</td>
                     <td>{{ substance.molecular_weight }}</td>
+                    <td>
+                        <ul>
+                            {% for image_id in substance.images %}
+                                <li><a href="/api/images/{{ image_id }}">Image {{ image_id }}</a></li>
+                            {% endfor %}
+                        </ul>
+                    </td>
                     <td>
                         <a class="button-secondary pure-button" href="/substances/edit/{{ substance.id }}">
                             <i class="fas fa-edit"></i>

@@ -18,7 +18,19 @@ class Substance:
         ).get("id")
 
     def find(self, id):
-        return self.db.get_record("substances", "*", {"key":"id", "operator": "=", "value": str(id)})[0]
+        result = self.db.execute("""
+        SELECT array(
+            SELECT id FROM images i
+            WHERE i.substance_id = s.id
+        ) as images, * FROM substances s
+        WHERE s.id = %s
+            """, [ id ], True)
+        if isinstance(result, Exception):
+            print(f"Error in FindByTitle Substance: {result}")
+            return []
+        else:
+            print(result[0])
+            return result[0]
 
     def findByTitle(self, title):
         result = self.db.execute("""
