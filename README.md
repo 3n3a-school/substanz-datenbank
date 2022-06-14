@@ -2,4 +2,10 @@
 
 ## `schema`
 
-risks --> substance_risks --> substances <-- substance_images <-- images
+```mermaid
+erDiagram
+  SUBSTANCE ||--o{ IMAGES : has
+  SUBSTANCE ||--o{ SYNONYMS : has
+  SUBSTANCE ||--o{ SUBSTANCE_GROUPS : "belongs to"
+  SUBSTANCE_GROUPS }o--|| GROUPS : "belongs to"
+```
