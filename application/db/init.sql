@@ -14,7 +14,8 @@ CREATE TABLE IF NOT EXISTS images (
 
 CREATE TABLE IF NOT EXISTS synonyms (
     id SERIAL PRIMARY KEY,
-    name VARCHAR(255)
+    name VARCHAR(255),
+    substance_id INT REFERENCES substances(id) ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS groups (
