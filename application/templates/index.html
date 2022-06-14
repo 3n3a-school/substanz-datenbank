@@ -33,6 +33,8 @@
                     <th>Name</th>
                     <th>Molecular Formula</th>
                     <th>Molecular Weight</th>
+                    <th>Groups</th>
+                    <th>Synonyms</th>
                     <th>Images</th>
                     <th></th>
                     <th></th>
@@ -45,6 +47,20 @@
                     <td>{{ substance.name }}</td>
                     <td>{{ substance.molecular_formula }}</td>
                     <td>{{ substance.molecular_weight }}</td>
+                    <td>
+                        <ul>
+                            {% for group_id in substance.groups %}
+                                <li>{{ group_id }}</li>
+                            {% endfor %}
+                        </ul>
+                    </td>
+                    <td>
+                        <ul>
+                            {% for synonym_id in substance.synonyms %}
+                                <li>{{ synonym_id }}</li>
+                            {% endfor %}
+                        </ul>
+                    </td>
                     <td>
                         <ul>
                             {% for image_id in substance.images %}
