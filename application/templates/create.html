@@ -28,7 +28,11 @@
                 <button onclick="addGroup()" class="pure-button pure-button-primary">
                     <i class="fa-solid fa-add"></i>
                 </button>
-                <input type="text" name="groups" id="groups">
+                <select name="groups" id="groups">
+                    {% for group in groups %}
+                    <option value="{{ group.id }}">{{ group.name }}</option>
+                    {% endfor %}
+                </select>
             </label>
             <label for="synonyms" id="synonym-label">
                 <span>Synonyms</span>
@@ -41,18 +45,29 @@
                 <span>Images</span>
                 <input type="file" accept="image/*" multiple="true" name="images" id="images">
             </label>
-            <button class="button-success pure-button" required type="submit">
+            <button class="button-success pure-button" required type="submit" onclick="submitForm()">
                 Add
             </button>
         </form>
     </div>
 
     <script>
+        let form = document.getElementById('create-form')
         let groups  = document.getElementById('group-label')
         let synonyms  = document.getElementById('synonym-label')
+        form.addEventListener('submit', (e) => {
+            e.preventDefault()
+        })
+        function submitForm() {
+            form.submit()
+        }
         function addGroup() {
             groups.insertAdjacentHTML("beforeend", `
-            <input type="text" name="groups" id="groups">
+            <select name="groups" id="groups">
+                {% for group in groups %}
+                <option value="{{ group.id }}">{{ group.name }}</option>
+                {% endfor %}
+            </select>
             `)
         }
         function addSynonym() {

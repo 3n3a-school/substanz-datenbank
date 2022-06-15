@@ -1,4 +1,5 @@
 import io
+from tokenize import group
 from controllers.synonyms import Synonym
 from controllers.groups import Group
 from flask import Flask, render_template, request, jsonify, redirect, url_for, send_file
@@ -37,7 +38,8 @@ def allSubstances():
 
 @app.route("/substances/new")
 def newSubstance():
-    return render_template('create.html')
+    groupsList = groupController.findAll()
+    return render_template('create.html', groups=groupsList)
 
 @app.route("/substances/edit/<id>")
 def editSubstance(id):
@@ -65,7 +67,7 @@ def updateSubstance(id):
         updateRes = substanceController.update(request.form, id)
         if 'images' in request.files.keys():
             updateRes = imageController.update(request.files, id)
-        if updateRes is not True:
+        if updateRes != True:
             print(f"Error in Update: {updateRes}")
             return {"error": "Update caused error"}
         else:

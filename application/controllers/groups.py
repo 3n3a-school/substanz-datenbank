@@ -18,3 +18,6 @@ class Group:
                 ]
             )
         return True
+
+    def findAll(self):
+        return self.db.get_record("groups", "*")
