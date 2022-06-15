@@ -23,11 +23,23 @@
             </label>
             <label for="groups">
                 <span>Groups</span>
-                <input type="text" name="groups" id="groups" value="{{ substance.groups }}">
+                {% if substance.groups %}
+                    {% for group in substance.groups %}
+                        <input type="text" name="groups" id="groups" value="{{ group }}">
+                    {% endfor %}
+                {% else %}
+                    <em style="color:lightslategray">No Groups found</em>
+                {% endif %}
             </label>
             <label for="synonyms">
                 <span>Synonyms</span>
-                <input type="text" name="synonyms" id="synonyms">
+                {% if substance.synonyms %}
+                    {% for synonym in substance.synonyms %}
+                        <input type="text" name="synonyms" id="synonyms" value="{{ synonym }}">
+                    {% endfor %}
+                {% else %}
+                    <em style="color:lightslategray">No Synonyms found</em>
+                {% endif %}
             </label>
             <label for="images">
                 <span>Images</span>

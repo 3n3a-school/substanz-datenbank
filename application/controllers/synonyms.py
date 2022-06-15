@@ -1,20 +1,20 @@
 from db import DB
 
-class Group:
+class Synonym:
     def __init__(self):
         self.db = DB()
 
     def create(self, substance_id, form):
-        for group_id in form.getlist('groups'):
+        for synonym in form.getlist('synonyms'):
             self.db.insert_record(
-                "substance_groups",
+                "synonyms",
                 [
                     "substance_id",
-                    "group_id"
+                    "name"
                 ],
                 [
                     substance_id,
-                    group_id
+                    synonym
                 ]
             )
         return True

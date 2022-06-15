@@ -1,4 +1,6 @@
 import io
+from controllers.synonyms import Synonym
+from controllers.groups import Group
 from flask import Flask, render_template, request, jsonify, redirect, url_for, send_file
 from werkzeug.wsgi import wrap_file
 from controllers.substance import Substance
@@ -8,6 +10,8 @@ app = Flask(__name__)
 
 substanceController = Substance()
 imageController = Image()
+groupController = Group()
+synonymController = Synonym()
 
 @app.route("/")
 def index():
@@ -46,6 +50,8 @@ def createSubstance():
     elif request.method == "POST":
         substance_id = substanceController.create(request.form)
         imageController.create(request.files, substance_id)
+        groupController.create(substance_id, request.form)
+        synonymController.create(substance_id, request.form)
         return redirect(url_for('allSubstances'))
 
 @app.route("/api/substances/del/<id>")
