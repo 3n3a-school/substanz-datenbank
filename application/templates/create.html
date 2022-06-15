@@ -8,7 +8,9 @@
         <form 
         class="pure-form pure-form-stacked" 
         action="/api/substances" method="post"
-        enctype="multipart/form-data">
+        enctype="multipart/form-data"
+        id="create-form"
+        >
             <label for="name">
                 <span>Name</span>
                 <input required type="text" name="name" id="name">
@@ -21,12 +23,18 @@
                 <span>Molecular Weight</span>
                 <input required type="text" name="molecular_weight" id="molecular_weight">
             </label>
-            <label for="groups">
+            <label for="groups" id="group-label">
                 <span>Groups</span>
+                <button onclick="addGroup()" class="pure-button pure-button-primary">
+                    <i class="fa-solid fa-add"></i>
+                </button>
                 <input type="text" name="groups" id="groups">
             </label>
-            <label for="synonyms">
+            <label for="synonyms" id="synonym-label">
                 <span>Synonyms</span>
+                <button onclick="addSynonym()" class="pure-button pure-button-primary">
+                    <i class="fa-solid fa-add"></i>
+                </button>
                 <input type="text" name="synonyms" id="synonyms">
             </label>
             <label for="images">
@@ -38,4 +46,19 @@
             </button>
         </form>
     </div>
+
+    <script>
+        let groups  = document.getElementById('group-label')
+        let synonyms  = document.getElementById('synonym-label')
+        function addGroup() {
+            groups.insertAdjacentHTML("beforeend", `
+            <input type="text" name="groups" id="groups">
+            `)
+        }
+        function addSynonym() {
+            synonyms.insertAdjacentHTML("beforeend", `
+            <input type="text" name="synonyms" id="synonyms">
+            `)
+        }
+    </script>
 {% endblock %}

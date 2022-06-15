@@ -25,7 +25,7 @@ CREATE TABLE IF NOT EXISTS groups (
 
 
 CREATE TABLE IF NOT EXISTS substance_groups (
-    substance_id INT REFERENCES substances(id) ON DELETE NO ACTION,
+    substance_id INT REFERENCES substances(id) ON DELETE CASCADE,
     group_id INT REFERENCES groups(id) ON DELETE NO ACTION
 );
 
