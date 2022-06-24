@@ -64,10 +64,12 @@
     </style>
 </head>
 <body>
-    <div class="pure-c">
-        {% if request.endpoint != "allSubstances" %}
+    {% if request.endpoint != "allSubstances" %}
+    <div class="pure-gap">
         <a onclick="history.back();" class="pure-button">◀️ Back</a>
-        {% endif %}
+    </div>
+    {% endif %}
+    <div class="pure-c">
         <div class="pure-g pure-g-row pure-gap">
             {% block content %}
             {% endblock %}
