@@ -67,11 +67,7 @@ def updateSubstance(id):
         updateRes = substanceController.update(request.form, id)
         if 'images' in request.files.keys():
             updateRes = imageController.update(request.files, id)
-        if updateRes != True:
-            print(f"Error in Update: {updateRes}")
-            return {"error": "Update caused error"}
-        else:
-           return redirect(url_for('allSubstances'))
+        return redirect(url_for('allSubstances'))
 
 @app.route("/api/images/<id>")
 def getImage(id):
